@@ -9,17 +9,12 @@ app.use(require('body-parser').urlencoded({ extended: false }))
 
 const mentions = ' <@willman> <@jasmine> <@jenn> <@kosamari> <@brianloveswords>'
 app.use(function (req, res) {
-  let body = req.body.Body || req.body.body || req.body.description
-
-  if (!body)
-    return res.status(400).end()
-
   request.post({
     uri: process.env.SLACK_URL,
     json: {
       username: 'Incident',
       icon_emoji: ':japanese_ogre:',
-      text: body + mentions
+      text: (req.body.Body || req.body.body || req.body.description) + mentions
     }
   })
   res.status(204).end()
